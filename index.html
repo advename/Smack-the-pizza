@@ -119,6 +119,7 @@
     let wazupA = document.querySelector(".wazupAudio")
     let screamA = document.querySelector(".screamAudio")
     let pizzaA = document.querySelector(".pizzaAudio")
+    let contin = 0;
 
     //Defining vw and vh
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
@@ -129,7 +130,21 @@
     pizzaA.play();
 
     stop.addEventListener('click', function() {
-        run = 1;
+        if(contin == 0){
+            stop.value = "Continue";
+            pizzaA.pause();
+            contin=1;
+            run = 1;
+            rPosition.style.transition = "all 0s";
+        }
+        else if(contin ==1){
+            stop.value = "Stop";
+            pizzaA.play();
+            contin=1;
+            run = 0;
+            rPosition.style.transition = "all .3s";
+            moveAround();
+        }
     });
     start.addEventListener('click', function() {
         run = 0;
@@ -160,7 +175,7 @@
         console.log(x + "," + y);
         console.log(h + "," + w);
         if (run == 0) {
-            setTimeout(moveAround, 500);
+            setTimeout(moveAround, 100);
 
         }
 
