@@ -1,20 +1,188 @@
 <!DOCTYPE html>
 <html lang="EN">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Indie+Flower|Kaushan+Script|Pacifico" rel="stylesheet">
     <title>Smack the Pizza</title>
     <style>
-        #pizza{
-            height: 170px;
-            width: 161px;
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            background-image: url(background.jpg);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+        }
+
+        #pizza {
+            height: 161px;
+            width: 170px;
             background-image: url(pizza.png);
+            margin: 0;
+            padding: 0;
+        }
+
+        .rPosition {
+            transition: all .3s;
+            margin: 0;
+            padding: 0;
+        }
+
+        /*.start {
+            position: absolute;
+            left: 40%;
+            top: 40%;
+        }*/
+
+        .start h1 {
+            position: absolute;
+            left: 0;
+            top: 40%;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            text-align: center;
+            color: white;
+            font-size: 60px;
+            text-shadow: 2px 2px black;
+            font-family: 'Kaushan Script', cursive;
+
+
+        }
+
+        .start .buttonContainer {
+            width: 98px;
+            position: absolute;
+            left: 0;
+            top: 55%;
+            right: 0;
+            bottom: 0;
+            margin: 0 auto;
+        }
+        .startButton{
+            font-size: 30px;
+            border-radius: 5px;
+        }
+        .hide{
+            display:none;
+        }
+        .fade{
+            animation: fadeAway .5s forwards;
+        }
+        @keyframes fadeAway{
+            to{
+                opacity: 0;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div id="pizza" class="">
+    <input type="button" class="stopButton hide" value="Stop">
+
+    <div class="start">
+        <h1>Catch the pizza</h1>
+        <div class="buttonContainer">
+            <input type="button" class="startButton" value="START">
+        </div>
     </div>
+
+    <div id="pizza" class="rPosition hide">
+    </div>
+
+    <audio class="wazupAudio">
+            <source src="wazup.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+    </audio>
+    <audio class="screamAudio">
+            <source src="scream1.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+    </audio>
+    <audio class="pizzaAudio">
+            <source src="pizza-song.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+    </audio>
+
 </body>
+<script>
+    let pizza = document.querySelector("#pizza");
+    let rPosition = document.querySelector(".rPosition");
+    let stop = document.querySelector(".stopButton");
+    let start = document.querySelector(".startButton");
+    let run = 0;
+    let header = document.querySelector(".start h1");
+    let bodyE = document.querySelector("body");
+    let wazupA = document.querySelector(".wazupAudio")
+    let screamA = document.querySelector(".screamAudio")
+    let pizzaA = document.querySelector(".pizzaAudio")
+
+    //Defining vw and vh
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+    var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+
+    //Play pizza audio
+    pizzaA.volume = 0.1;
+    pizzaA.play();
+
+    stop.addEventListener('click', function() {
+        run = 1;
+    });
+    start.addEventListener('click', function() {
+        run = 0;
+        moveAround();
+        pizza.classList.remove("hide");
+        stop.classList.remove("hide");
+        start.classList.add("fade");
+        header.classList.add("fade")
+
+    });
+    //setTimeout(moveAround, 500);
+    rPosition.addEventListener('click', caughtPizza);
+
+    function moveAround() {
+        let x = (Math.random() * w);
+        let y = (Math.random() * h);
+
+        if (x > w - 200) {
+            x = w - 200;
+            console.log("STOP X")
+        }
+        if (y > h - 190) {
+            y = h - 190;
+            console.log("STOP X")
+        }
+
+        rPosition.style.transform = "translate(" + x + "px," + y + "px)";
+        console.log(x + "," + y);
+        console.log(h + "," + w);
+        if (run == 0) {
+            setTimeout(moveAround, 500);
+
+        }
+
+
+    }
+
+    function caughtPizza() {
+        run = 1;
+        bodyE.style.backgroundImage = "url(whatsup.jpg)";
+        pizza.classList.add("hide");
+        pizzaA.pause();
+        wazupA.play();
+        setTimeout(scary, 2000);
+    }
+
+    function scary() {
+        bodyE.style.backgroundImage = "url(scare.jpg)";
+        screamA.play();
+        wazupA.pause();
+
+
+    }
+</script>
+
 </html>
